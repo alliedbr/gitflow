@@ -253,3 +253,40 @@ git branch -D feature/nome-da-sua-feature
 ```
 
 O _D_ maiúsculo é necessário porque com o squash, a branch perde a referência do histórico de merge, mas fique tranquilo quanto a isso.
+
+## Tags
+
+**NUNCA ESQUECA DESSE CARA**. Mas não se preocupem com tags em relação a _features_ criadas. Uma tag só deve ser criada quando a master for atualizada com o merge ou PR de um _bugfix/_ ou _hotfix/_.
+
+No caso de componentes gerais da empresa, aí sim é de alguma _feature/_ direto pra **master**.
+
+Crie tag da seguinte forma:
+
+```
+git tag -a N.N.N -m "Versao N.N.N
+* descricao de algo feito na tag
+* descricao de outra coisa feito na tag
+* mais uma descricao"
+```
+
+Lembrando que o N é o número respectivo à versão que foi criada. Seguimos o padrão [SemVer](https://semver.org/), portanto, fiquem ligado nisso. Qualquer dúvida é [só ver a documentação dele](https://semver.org/).
+
+### ATENÇÃO!!!
+
+![Alerta](../images/important.png)
+
+Por favor, não utilizem a letra **v** nas versões das tags, **SOMENTE NÚMEROS e PONTOS**.
+
+Por ex: _CERTO_ **1.0.0** e _ERRADO_ **v1.0.0**
+
+Depois que adicionar a tag, você precisa publicar no TFS:
+
+```
+git push --tags
+```
+
+## Integração Contínua (CI/CD)
+
+Todos os nossos projetos já possuem CI/CD configurada. O funcionamento é bem simples, a cada merge gerado em uma das branches principais: **homolog** e **master**, a CI/CD será executada. Com tudo ok, o CI de produção será realizado.
+
+Backups são automáticos e rollback é mais simples, praticamente _clicando um botão_ e voltamos a uma versão anterior.
