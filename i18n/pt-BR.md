@@ -172,3 +172,84 @@ Caso tenha dado algum problema, troca de muita coisa, pode ser necessário usar 
 ```
 git push origin feature/testes-service-endereco --force-with-lease
 ```
+
+#### Pronto para o PR
+
+Feito isso, você está pronto para o próximo passo...
+
+## Pull Request
+
+Pra quem não conhece, PR é o cara que faz o merge para uma de nossas branches principais: **develop**, **homolog** e **master**. Pull Requests são code reviews que o time terá. Nós fazemos isso no Azure DevOps, vocês verão um link Create Pull Request. Cliquem lá e depois deixem do lado esquerdo a branch que vocês acabaram de criar e do lado direito a branch principal que vocês precisaram alterar. Na grande maioria a branch principal apontada será a **develop**.
+
+### Integrações
+
+Peça para o PO do seu time ou algum dos Scrum Masters para configurar a integração com o canal do seu projeto no Slack. Peça para ele(a) configurar a integração Azure DevOps/Slack para a criação de Pull Requests e Alteração de Pull Requests, assim, sempre que criarem, alterarem ou completarem um PR, o Slack avisará no canal.
+
+### Mesmo assim...
+
+Mesmo assim, caso ninguém tenha se manifestado pelo Slack ou pessoalmente, mande o link do PR para o cara que esteja contigo no projeto.
+
+Esse link do PR contém todos os seus commits naquela branch, todos os arquivos modificados. Ele serve para a equipe verificar e aprovar as alterações.
+
+### Padrão de Descrição de Pull Requets
+
+É sempre bom seguir uma ótima descrição de PR's. É essencial o desenvolvedor que vai avaliar o seu PR já saber pela Descrição tudo que foi feito. Devemos ver as modificações e arquivos para fazer uma análise do que foi feito, os porquês, etc.
+
+Uma mensagem ideal seria mais ou menos no formato abaixo:
+
+```
+Titulo do seu PR
+
+> descrição e porquês daquele PR ter sido criado
+
+## Subtitulo de algo que foi feito
+* add testes para verificar se o binding esta sendo passado corretamente
+* add estilo mobile do componente
+* add estilo desktop do componente
+
+## Outro subtítulo de outra task feita
+* add metodo que verifica erros
+* mais um ponto a ser descrito
+```
+
+Os símbolos **##** servem para criar subtítulos na descrição, o Azure DevOps transforma automaticamente. É como os headings do HTML h1, h2, h3, h4, h5 e h6, cada número desse é uma tralha referente, por exemplo, **##** é um h2 e um **###** é um h3.
+
+O símbolo **>** serve para fazer um comentário pontual, ele é similar a tag blockquote do HTML. Utilize caso você ache necessário, seja numa modificação drástica, mas sempre explicando por que você fez aquilo.
+
+Percebam que o formato da Descrição é similar às mensagens de commit que citei mais acima. Infelizmente o Azure DevOps não pega todas as mensagens de commits criadas. Eu faço da seguinte forma, a cada commit eu pego a mensagem de commit e colo num arquivo dentro do VS Code e adiciono o **##**. No final fica um arquivo relativamente grande, que assim que crio o Pull Request, copio e colo no textarea de Descrição.
+
+### Avaliação e Complete
+
+PR's não foram feitos somente para serem aceites e completados, forma feitos PRINCIPALMENTE para serem avaliados. É sempre importante comentários sobre alterações e melhorias no código, caso seja necessário.
+
+No Azure DevOps você pode colocar comentários e marcar o PR como _Waiting for author_. Você também pode marcar o PR como _Approved with suggestions_, assim o autor já fica ciente de melhorias pequenas que pode fazer no próximo PR.
+
+Faça sempre a parte do rebase para o PR não ficar com conflitos, porque se isso ocorrer, não será possível dar _Complete_ no PR e o autor precisará fazer manualmente o squash merge.
+
+### Marcação
+
+NUNCA esqueça de marcar o companheiro do seu time para fazer o code review para você, com isso, ele recebe um email de notificação que ele precisa avaliar um PR.
+
+### PR com squash
+
+Como já falei acima algumas vezes, nossos PR's precisam ser feitos com squash para a branch **develop**. NUNCA FAÇAM PULL REQUESTS DA DEVELOP PARA HOMOLOG E NEM DA HOMOLOG PARA MASTER ;)
+
+O único caso que o squash precisa ser feito diretamente para a **homolog** ou **master** é em relação a um _bugfix/_, aí sim ele precisa do PR com squash.
+
+Para enviar como _squash_ é fácil, é só na hora do _Complete_ Você selecionar a opção abaixo:
+
+![Git Squash](../images/squash.gif)
+
+### Exclusão de branches
+
+Após um PR ser completado, a branch que for criada deverá ser excluída. Para excluir a branch é só selecionar a opção:
+
+![Git Squash](../images/deletar-branch.gif)
+
+Em algumas vezes isso não é possível devido as permissões do Azure DevOps. Mas caso isso aconteça, peça para o criador do PR excluir a branch no Azure DevOps e também localmente com o seguinte comando:
+
+```
+git branch -D feature/nome-da-sua-feature
+```
+
+O _D_ maiúsculo é necessário porque com o squash, a branch perde a referência do histórico de merge, mas fique tranquilo quanto a isso.
