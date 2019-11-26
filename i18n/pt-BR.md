@@ -82,7 +82,7 @@ git commit -m "feat: Head de tudo que foi feito
 * mais outra coisa feita"
 ```
 
-Esse **ID_DA_TAREFA_QUE_VEM_NO_AZURE_DEVOPS** é aquele ID da tarefa que vocês pegam no Azure DevOps e geralmente tem 5 números. Fazendo isso você vincula aquela tarefa ao commit e ao PR, com isso, ao mergear o PR, sua tarefa será movida para //Resolved// automaticamente. Essa opção é opcional, mas caso queira colocar, faça isso **SOMENTE EM UM COMMIT**.
+Esse **ID_DA_TAREFA_QUE_VEM_NO_AZURE_DEVOPS** é aquele ID da tarefa que vocês pegam no Azure DevOps e geralmente tem 5 números. Fazendo isso você vincula aquela tarefa ao commit e ao PR, com isso, ao mergear o PR, sua tarefa será movida para _Resolved_ automaticamente. Essa opção é opcional, mas caso queira colocar, faça isso **SOMENTE EM UM COMMIT**.
 
 Claro, não são todos os commits que precisam de uma mensagem grande dessa forma, nesses casos eu uso da seguinte forma:
 
@@ -95,3 +95,80 @@ Não coloque acentuação e caracteres especiais nas mensagens de commit para ev
 ### Commitlint
 
 Um cara que usamos também é o [commitlint](https://github.com/conventional-changelog/commitlint). Com ele nós verificamos se sua mensagem de commit está dentro dos nossos padrões. Caso não seja, seu commit não será realizado.
+
+## Rebase pré push e PR
+
+Antes de vocês criarem o Pull Request no Azure DevOps, precisam seguir uns passos para não ter conflito no PR e ter que fazer o _merge_ manualmente.
+
+### Feature finalizada localmente
+
+Vamos supor que o nome da sua branch é _feature/testes-service-endereco_. Você já fez vários commits nela e agora precisa dar um push nela.
+
+Quando você finalizar tudo nela, você, **ANTES DE DAR PUSH**, rodará os comandos:
+
+```
+git checkout develop
+git pull origin develop
+```
+
+Isso deixará sua branch **develop** atualizada. Após isso rode os seguintes comandos:
+
+```
+git checkout feature/testes-service-endereco
+git rebase --autosquash develop
+```
+
+Isso fará um rebase com o squash do que tem na **develop** na sua _feature_. Caso você queira alterar a mensagem de commit, coloque o _-i_: `git rebase -i --autosquash develop`.
+
+Ele deixará sua branch zerada, sem commits nenhum. Depois ele aplicará todos os commits da **develop** na sua branch, para depois ele aplicar todos os seus commits.
+
+Isso faz com que o histórico fique correto.
+
+#### Outra forma
+
+Ao invés dessa quantidade de comandos você pode lançar um único comando a seguir:
+
+```
+git pull origin develop --rebase
+```
+
+#### Resumindo...
+
+Lembrando que em caso de uma _bugfix/_ na **homolog** ou **master**, o rebase também terá que ser feito de cima para baixo. Por exemplo, se a _bugfix/_ foi feita na **master**, você, após o PR, precisa atualizar sua branch **master** local e descer para a homolog com rebase:
+
+```
+git checkout homolog
+git pull origin homolog
+git pull origin master --rebase
+```
+
+Depois fazer o mesmo com a develop:
+
+```
+git checkout develop
+git pull origin develop
+git pull origin master --rebase
+```
+
+Caso não tenha tido conflitos, comemore e beba uma cerveja. Caso contrário...
+
+#### Ferrou, deu conflito
+
+Sem problemas, resolva seus conflitos localmente na sua IDE de preferência e depois adicione os arquivos no staging do git:
+
+```
+git add <arquivo1> <arquivo2> ...
+git rebase --continue
+```
+
+Feito isso você pode dar _push_ na sua branch:
+
+```
+git push origin feature/testes-service-endereco
+```
+
+Caso tenha dado algum problema, troca de muita coisa, pode ser necessário usar o _force_, mas no caso use com o sufixo _--force-with-lease_, que é um _force_ menos agressivo.
+
+```
+git push origin feature/testes-service-endereco --force-with-lease
+```
