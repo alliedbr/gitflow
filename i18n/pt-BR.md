@@ -6,7 +6,9 @@ Aqui usamos o Azure DevOps como ferramente de Git e CI/CD.
 
 ## Pequena Introdução
 
-Não sei o quanto vocês manjam de terminal, ssh e afins, mas fica a dica: tentem usar o máximo possível disso. É chato, digita mais, o visual é mais fácil? Sim, porém, o mercado pede muito disso em algumas empresas fodásticas. Teve uma entrevista que participei que o cara me perguntou se eu usava Mac e mexia com Terminal, falei que sim e odiava ferramentas visuais do Git, IDEs, etc. Recebi um puta elogio por isso e eles levam muito em consideração.
+Não sei o quanto vocês manjam de terminal, ssh e afins, mas fica a dica: tentem usar o máximo possível disso. É chato, digita mais, o visual é mais fácil? Sim, porém, o mercado pede muito disso em algumas empresas fodásticas.
+
+Teve uma entrevista que participei que o cara me perguntou se eu usava Mac e mexia com Terminal, falei que sim e odiava ferramentas visuais do Git, IDEs, etc. Recebi um puta elogio por isso e eles levam muito em consideração.
 
 ## Vamos falar de Gitflow
 
@@ -58,3 +60,38 @@ Vamos supor que seja uma solução para um problema no cartão de crédito:
 * **bugfix/retorno-api-cartao**
 
 Lembrando sempre de dar nomes que você tenha uma ideia do que será feito. **NUNCA** vamos usar o ID da Issue do Azure DevOps para nomear as branches. Assim como usar um **bugfix/resolvendo-bugs**, que não mostra o que está sendo realmente feito.
+
+## Mensagens de commit
+
+**NUNCA** faça commits com a mesma mensagem. Seja o mais específico possível com suas mensagens de commit. Se o desenvolvedor souber o que foi feito no PR somente com as mensagens de commit, ela foi feita de forma correta.
+
+Seguimos o padrão do Commitizen, que tem abaixo a seguinte lista de prefixos de commit:
+
+![Adicionando um commit](../images/add-commit.png)
+
+[Veja mais detalhes sobre como usar o commitizen](https://github.com/commitizen/cz-cli).
+
+Siga o seguinte padrão de mensagem pra commit que você pode fazer no Gitbash, Cmder ou ConEmu:
+
+```
+git commit -m "feat: Head de tudo que foi feito
+
+#ID_DA_TAREFA_QUE_VEM_NO_AZURE_DEVOPS
+* descricao de algo que foi feito
+* mas outra coisa que foi feita
+* mais outra coisa feita"
+```
+
+Esse **ID_DA_TAREFA_QUE_VEM_NO_AZURE_DEVOPS** é aquele ID da tarefa que vocês pegam no Azure DevOps e geralmente tem 5 números. Fazendo isso você vincula aquela tarefa ao commit e ao PR, com isso, ao mergear o PR, sua tarefa será movida para //Resolved// automaticamente. Essa opção é opcional, mas caso queira colocar, faça isso **SOMENTE EM UM COMMIT**.
+
+Claro, não são todos os commits que precisam de uma mensagem grande dessa forma, nesses casos eu uso da seguinte forma:
+
+`git commit -m "refactor: Tarefa realizada com uma descricao completa"`
+
+Depois eu pego essa mensagem e colo numa seção chamada **## Outros** dentro da descrição do PR.
+
+Não coloque acentuação e caracteres especiais nas mensagens de commit para evitar bugs malucos nos terminais.
+
+### Commitlint
+
+Um cara que usamos também é o [commitlint](https://github.com/conventional-changelog/commitlint). Com ele nós verificamos se sua mensagem de commit está dentro dos nossos padrões. Caso não seja, seu commit não será realizado.
