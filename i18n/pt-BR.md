@@ -94,4 +94,4 @@ Não coloque acentuação e caracteres especiais nas mensagens de commit para ev
 
 ### Commitlint
 
-Um cara que usamos também é o [commitlint](https://github.com/conventional-changelog/commitlint).
+Um cara que usamos também é o [commitlint](https://github.com/conventional-changelog/commitlint). Com ele nós verificamos se sua mensagem de commit está dentro dos nossos padrões. Caso não seja, seu commit não será realizado.
